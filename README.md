@@ -1,5 +1,7 @@
 # Taskless Pack Scaffold
 
+> This repository is a work in progress
+
 Curious aboout how Taskless Packs work with WebAssembly? This is a scaffold to help you get started.
 
 This scaffold includes:
