@@ -6,8 +6,15 @@ export const manifest = {
   version: "0.0.1",
   description: "Test pack, never published to prod",
   permissions: {
-    // no extended permissions required
+    body: true, // wants access to the body of the request and response
   },
-  fields: [],
+  fields: [
+    {
+      name: "testField",
+      type: "string",
+      description: "Test field that should exist in the lifecycle",
+      default: "test_field_value",
+    },
+  ],
   charts: [],
 } satisfies Manifest;

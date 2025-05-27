@@ -13,12 +13,28 @@
   },
   "tests": [
     {
-      "name": "preTest is set",
-      "test": "$[*].dimensions[?(@.name == 'testpack/testPre' && @.value == 'preTest')]"
+      "name": "preTest is set in pre lifecycle",
+      "test": "$[*].dimensions[?(@.name == 'testpack/testPre' && @.value == 'test_pre_value')]"
     },
     {
-      "name": "postTest is set",
-      "test": "$[*].dimensions[?(@.name == 'testpack/testPost' && @.value == 'postTest')]"
+      "name": "configuration values are available in the lifecycle",
+      "test": "$[*].dimensions[?(@.name == 'testpack/testField' && @.value == 'test_field_value')]"
+    },
+    {
+      "name": "request url is captured in pre lifecycle",
+      "test": "$[*].dimensions[?(@.name == 'testpack/url' && @.value == 'https://example.com/api')]"
+    },
+    {
+      "name": "postTest is set in post lifecycle",
+      "test": "$[*].dimensions[?(@.name == 'testpack/testPost' && @.value == 'test_post_value')]"
+    },
+    {
+      "name": "postTest can access values from the context",
+      "test": "$[*].dimensions[?(@.name == 'testpack/testPostFromPre' && @.value == 'from_pre_context_value')]"
+    },
+    {
+      "name": "postTest can see the response data (property C)",
+      "test": "$[*].dimensions[?(@.name == 'testpack/testResponseData' && @.value == 3)]"
     }
   ]
 }

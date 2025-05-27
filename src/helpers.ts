@@ -1,15 +1,32 @@
+import { type PluginOutput, type PluginInput } from "@taskless/loader";
 import { type PartialDeep } from "type-fest";
+import { type Pack } from "./__generated__/pack.js";
 
-export const readInput = <T>(): T => {
-  return JSON.parse(Host.inputString()) as T;
+type PackConfiguration = Pick<Pack, "configuration">;
+
+export const readInput = <
+  TContext extends Record<string, unknown> = Record<string, unknown>,
+  TRequestBody = unknown,
+  TResponseBody = unknown,
+>() => {
+  return JSON.parse(Host.inputString()) as PluginInput<
+    TContext,
+    TRequestBody,
+    TResponseBody
+  > &
+    PackConfiguration;
 };
 
-export const writeOutput = <T>(data: PartialDeep<T>) => {
+export const writeOutput = <
+  TContext extends Record<string, unknown> = Record<string, unknown>,
+>(
+  data: PartialDeep<PluginOutput<TContext>>
+) => {
   Host.outputString(JSON.stringify(data));
 };
 
 export const isValidHost = (hostName: string, domains: string[]): boolean => {
-  // domains contain a *  as a simple wildcard for any number of characters
+  // domains contain a * as a simple wildcard for any number of characters
   // ie: *.stripe.com
   return domains.some((domain) => {
     const regex = new RegExp(

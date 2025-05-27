@@ -1,7 +1,7 @@
-# @taskless/~core
+# @taskless/~testpack
 
-## 1.0.1
+## 0.0.1
 
 ### Patch Changes
 
-- Adds the standard JS infrastructure and packcheck based testing
+- Initial Version

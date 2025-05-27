@@ -15,13 +15,9 @@ const VERSION = "pre2";
 const base = process.env.TASKLESS_HOST ?? `${TASKLESS_HOST}`;
 const ROOT = (await packageDirectory())!;
 const GENERATED = resolve(ROOT, "src/__generated__");
-const WASM = resolve(ROOT, "wasm");
 
 await rimraf(GENERATED);
-await rimraf(WASM);
-
 await mkdirp(GENERATED);
-await mkdirp(WASM);
 
 const prettierOptions = {
   ...(JSON.parse(
