@@ -15,7 +15,7 @@
     "prepare": "husky",
     "prettier": "prettier",
     "syncpack": "syncpack",
-    "test": "pnpm dlx @taskless/pack@latest check --fixture ./test/fixture.json --manifest ./dist/manifest.json --wasm ./dist/pack.wasm",
+    "test": "pnpm dlx @taskless/pack@latest check --fixture ./test/fixture.json --manifest ./dist/manifest.json --wasm ./dist/pack.wasm --format json",
     "tsx": "tsx",
     "xo": "xo"
   },
