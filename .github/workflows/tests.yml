@@ -46,7 +46,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build & Test the WASM Pack
-        run: |
-          pnpm build
-          pnpm test
+      - name: Build the WASM Pack
+        run: pnpm build
+
+      - name: List out the dist dir (sanity check)
+        run: ls -la dist
+
+      - name: Run Test Suite
+        run: pnpm test
