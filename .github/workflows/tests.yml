@@ -52,5 +52,8 @@ jobs:
       - name: List out the dist dir (sanity check)
         run: ls -la dist
 
+      - name: Check extism install
+        run: extism-js --version
+
       - name: Run Test Suite
         run: pnpm test
