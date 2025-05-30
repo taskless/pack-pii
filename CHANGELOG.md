@@ -1,4 +1,4 @@
-# @taskless/~testpack
+# @taskless/~example
 
 ## 0.0.1
 
