@@ -1,10 +1,9 @@
 {
   "private": true,
-  "name": "@taskless/~pack-example",
-  "description": "An example pack for Taskless",
-  "version": "0.0.2",
+  "name": "@taskless/~pack-pii",
+  "description": "Detection library for PII",
+  "version": "0.0.1",
   "author": "Taskless",
-  "license": "MIT",
   "scripts": {
     "build": "run-s 'build:tsc' 'build:esbuild' 'build:extism' 'build:pack'",
     "build:esbuild": "node esbuild.js",
@@ -14,8 +13,9 @@
     "codegen": "tsx scripts/generate.ts",
     "prepare": "husky",
     "prettier": "prettier",
+    "push": "pnpm dlx @taskless/pack@latest publish --manifest ./dist/manifest.json --wasm ./dist/pack.wasm  --env ./.env.publish.local",
     "syncpack": "syncpack",
-    "test": "pnpm dlx @taskless/pack@latest check --fixture ./test/fixture.json --manifest ./dist/manifest.json --wasm ./dist/pack.wasm",
+    "test": "pnpm dlx @taskless/pack@latest check --manifest ./dist/manifest.json --wasm ./dist/pack.wasm --fixture ./test/fixture.json",
     "tsx": "tsx",
     "xo": "xo"
   },

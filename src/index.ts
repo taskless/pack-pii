@@ -1,38 +1,56 @@
-import { readInput, writeOutput } from "./helpers.js";
-import { manifest } from "./manifest.js";
-
-/** left as an example of passing context into outputs */
-type Context = {
-  fromPre: string;
-};
+import {
+  asArray,
+  checkBody,
+  checkHeaders,
+  createConfiguration,
+  normalizeBody,
+  readInput,
+  writeOutput,
+} from "./helpers.js";
+import { checks, manifest } from "./manifest.js";
 
 /**
  * pre() is called before the request is sent to the host
  */
-export function pre() {
+export async function pre() {
   const input = readInput();
+  const getConfig = createConfiguration(input.configuration, manifest);
+  const body = input.request.body
+    ? normalizeBody(input.request.body)
+    : undefined;
 
-  // your defaults are not available in input, only values that come
-  // from the taskless loader (read from taskless.io)
-  const testFieldConfigurationValue =
-    (input.configuration?.testField as string | undefined) ??
-    manifest.fields.find((f) => f.name === "testField")?.default ??
-    undefined;
+  const captures: Array<Record<string, unknown>> = [];
+  const regexes: RegExp[] = [];
 
-  // you can use the request object to capture data from the request
-  // and pass it to the telemetry system
-  writeOutput<Context>({
+  for (const check of checks) {
+    const fieldRegexes = asArray(getConfig(check.field.name))
+      .filter((v) => typeof v === "string")
+      .map((v) => new RegExp(v, "i"));
+    const valueRegexes = asArray(getConfig(check.value.name))
+      .filter((v) => typeof v === "string")
+      .map((v) => new RegExp(v, "i"));
+
+    regexes.push(...fieldRegexes, ...valueRegexes);
+
+    captures.push(
+      checkHeaders(
+        `${check.prefix}.send`,
+        input.request.headers,
+        fieldRegexes,
+        valueRegexes
+      )
+    );
+
+    if (body) {
+      captures.push(
+        checkBody(`${check.prefix}.send`, body, fieldRegexes, valueRegexes)
+      );
+    }
+  }
+
+  writeOutput({
     capture: {
-      // explicit capture from request
-      url: input.request.url,
-      // config values exist
-      testField: testFieldConfigurationValue,
-      // hardcoded capture
-      testPre: "test_pre_value",
-    },
-    context: {
-      // setting context to be used in post
-      fromPre: "from_pre_context_value",
+      ...(Object.assign({}, ...captures) as Record<string, string | number>),
     },
   });
 }
@@ -41,18 +59,40 @@ export function pre() {
  * post() is called after the request is sent to the host
  * and contains the response body
  */
-export function post() {
-  const input = readInput<Context, unknown, { c: number; d: number }>();
+export async function post() {
+  const input = readInput();
+  const getConfig = createConfiguration(input.configuration, manifest);
+  const body = input.response?.body
+    ? normalizeBody(input.response.body)
+    : undefined;
 
-  const responseDataC = input.response?.body?.c;
+  const captures: Array<Record<string, unknown>> = [];
 
-  writeOutput<Context>({
-    capture: {
-      // hardcoded capture in post lifecycle
-      testPost: "test_post_value",
-      // explicit capture from the prior context
-      testPostFromPre: input.context.fromPre,
-      testResponseData: responseDataC,
-    },
+  for (const check of checks) {
+    const fieldRegexes = asArray(getConfig(check.field.name))
+      .filter((v) => typeof v === "string")
+      .map((v) => new RegExp(v, "i"));
+    const valueRegexes = asArray(getConfig(check.value.name))
+      .filter((v) => typeof v === "string")
+      .map((v) => new RegExp(v, "i"));
+
+    captures.push(
+      checkHeaders(
+        `${check.prefix}.receive`,
+        input.response?.headers,
+        fieldRegexes,
+        valueRegexes
+      )
+    );
+
+    if (body) {
+      captures.push(
+        checkBody(`${check.prefix}.receive`, body, fieldRegexes, valueRegexes)
+      );
+    }
+  }
+
+  writeOutput({
+    capture: Object.assign({}, ...captures) as Record<string, string | number>,
   });
 }
