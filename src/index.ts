@@ -3,6 +3,7 @@ import {
   checkBody,
   checkHeaders,
   createConfiguration,
+  isValidHost,
   normalizeBody,
   readInput,
   writeOutput,
@@ -18,6 +19,20 @@ export async function pre() {
   const body = input.request.body
     ? normalizeBody(input.request.body)
     : undefined;
+
+  const validDomains = asArray(getConfig("domains") as string[]);
+  const isValid =
+    validDomains.length > 0
+      ? isValidHost(input.request.domain, validDomains)
+      : true;
+
+  if (!isValid) {
+    writeOutput({
+      capture: {},
+    });
+
+    return;
+  }
 
   const captures: Array<Record<string, unknown>> = [];
   const regexes: RegExp[] = [];
@@ -65,6 +80,20 @@ export async function post() {
   const body = input.response?.body
     ? normalizeBody(input.response.body)
     : undefined;
+
+  const validDomains = asArray(getConfig("domains") as string[]);
+  const isValid =
+    validDomains.length > 0
+      ? isValidHost(input.request.domain, validDomains)
+      : true;
+
+  if (!isValid) {
+    writeOutput({
+      capture: {},
+    });
+
+    return;
+  }
 
   const captures: Array<Record<string, unknown>> = [];
 

@@ -288,13 +288,22 @@ export const checks: Array<{
 export const manifest = {
   schema: "pre2",
   name: "pii",
-  version: "0.0.2",
+  version: "0.0.3",
   description: "A plugin to detect PII in your requests and responses",
   permissions: {
     body: true, // wants access to the body of the request and response
   },
-  fields: checks.flatMap((pair) => {
-    return [pair.field, pair.value];
-  }),
+  fields: [
+    {
+      name: "domains",
+      type: "string[]",
+      description:
+        "A collection of domains to apply the PII checks to. If empty, all domains are checked.",
+      default: [],
+    },
+    ...checks.flatMap((pair) => {
+      return [pair.field, pair.value];
+    }),
+  ],
   charts: [],
 } satisfies Manifest;
