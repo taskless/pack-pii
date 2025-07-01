@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "@taskless/~pack-pii",
-  "description": "Detection library for PII",
-  "version": "0.0.1",
+  "description": "PII detection plugin for Taskless",
+  "version": "0.0.4",
   "author": "Taskless",
   "scripts": {
     "build": "run-s 'build:tsc' 'build:esbuild' 'build:extism' 'build:pack'",

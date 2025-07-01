@@ -1,3 +1,4 @@
+import pk from "../package.json" with { type: "json" };
 import { type Manifest } from "./__generated__/manifest.js";
 
 const asJSONKeyRegex = (value: string) => {
@@ -288,7 +289,7 @@ export const checks: Array<{
 export const manifest = {
   schema: "pre2",
   name: "pii",
-  version: "0.0.3",
+  version: pk.version,
   description: "A plugin to detect PII in your requests and responses",
   permissions: {
     body: true, // wants access to the body of the request and response
