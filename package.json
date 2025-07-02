@@ -5,7 +5,8 @@
   "version": "0.0.4",
   "author": "Taskless",
   "scripts": {
-    "build": "run-s 'build:tsc' 'build:esbuild' 'build:extism' 'build:pack'",
+    "build": "run-s 'build:tsc' 'build:esbuild' 'build:extism' 'build:pack' 'build:bundle'",
+    "build:bundle": "pnpm dlx @taskless/pack@latest bundle --manifest ./dist/manifest.json --wasm ./dist/pack.wasm --out ./dist",
     "build:esbuild": "node esbuild.js",
     "build:extism": "extism-js dist/index.js -i src/index.d.ts -o dist/pack.wasm",
     "build:pack": "tsx scripts/packbuild.ts",
