@@ -2,7 +2,10 @@
   "request": {
     "url": "https://example.com/api",
     "method": "POST",
-    "headers": [["Content-Type", "application/json"]],
+    "headers": [
+      ["Content-Type", "application/json"],
+      ["x-sample", "test@example.com"]
+    ],
     "body": "{\"sample\":\"foo@example.com\",\"email_address\":\"totally.masked[at]foo[dot]com\",\"address\":\"1130 Random Way\\nSomewhere, CA 90210\",\"phoneNumber\":\"123-456-7890\",\"cc\":\"4242424242424242\",\"ssn\":\"123-45-6789\",\"dob\":\"1990-01-01\",\"origin\":\"192.168.1.1\"}"
   },
   "response": {
@@ -15,6 +18,10 @@
     {
       "name": "Saw that we sent an email",
       "test": "$[*].dimensions[?(@.name == 'pii/email.send' && @.value == 1)]"
+    },
+    {
+      "name": "Saw that we sent an as a header value",
+      "test": "$[*].dimensions[?(@.name == 'pii/email.send.header.value' && @.value == 1)]"
     },
     {
       "name": "Saw that we sent an email as a value",

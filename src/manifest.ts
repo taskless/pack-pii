@@ -49,7 +49,10 @@ const fields: Record<string, NonNullable<Manifest["fields"]>[number]> = {
     type: "string[]",
     description:
       "A collection of regular expressions to extend email address detection in values",
-    default: allValueTypes.map((prepare) => prepare(/\b\S+@\S+\.\S+\b/.source)),
+    default: [
+      ...allValueTypes.map((prepare) => prepare(/\b\S+@\S+\.\S+\b/.source)),
+      /\b\S+@\S+\.\S+\b/.source,
+    ],
   },
   addressFields: {
     name: "addressFields",
@@ -204,19 +207,24 @@ const fields: Record<string, NonNullable<Manifest["fields"]>[number]> = {
     type: "string[]",
     description:
       "A collection of regular expressions to extend IP address detection in values",
-    default: allValueTypes.map(
-      (prepare) =>
-        prepare(
-          // IPv4 v4 format
-          /\b(?:\d{1,3}\.){3}\d{1,3}\b/.source
-        ),
-      ...allValueTypes.map((prepare) =>
-        prepare(
-          // IPv6 format
-          /\b(?:[\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}\b/.source
+    default: [
+      ...allValueTypes.map(
+        (prepare) =>
+          prepare(
+            // IPv4 v4 format
+            /\b(?:\d{1,3}\.){3}\d{1,3}\b/.source
+          ),
+        ...allValueTypes.map((prepare) =>
+          prepare(
+            // IPv6 format
+            /\b(?:[\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}\b/.source
+          )
         )
-      )
-    ),
+      ),
+      // IP can be raw values in headers
+      /\b(?:\d{1,3}\.){3}\d{1,3}\b/.source,
+      /\b(?:[\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}\b/.source,
+    ],
   },
   additionalFields: {
     name: "additionalFields",

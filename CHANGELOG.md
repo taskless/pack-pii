@@ -1,5 +1,11 @@
 # @taskless/~example
 
+## 0.0.5
+
+### Patch Changes
+
+- Includes raw email and IP detection in default regexes
+
 ## 0.0.2
 
 ### Patch Changes

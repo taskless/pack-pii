@@ -7,7 +7,10 @@ export const fixture = {
   request: {
     url: "https://example.com/api",
     method: "POST",
-    headers: [["Content-Type", "application/json"]],
+    headers: [
+      ["Content-Type", "application/json"],
+      ["x-sample", "test@example.com"],
+    ],
     body: JSON.stringify({
       // email value
       sample: "foo@example.com",
@@ -34,6 +37,11 @@ export const fixture = {
   },
   tests: [
     genTest("Saw that we sent an email", "pii/email.send", 1),
+    genTest(
+      "Saw that we sent an as a header value",
+      "pii/email.send.header.value",
+      1
+    ),
     genTest(
       "Saw that we sent an email as a value",
       "pii/email.send.body.text",
