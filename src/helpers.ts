@@ -1,6 +1,9 @@
-import { type PluginOutput, type PluginInput } from "@taskless/loader";
-import { type Manifest } from "./__generated__/manifest.js";
-import { type Pack } from "./__generated__/pack.js";
+import {
+  type PluginOutput,
+  type PluginInput,
+  type Pack,
+  type Manifest,
+} from "@taskless/loader";
 import {
   type GetConfiguration,
   type ValidConfigurationValue,

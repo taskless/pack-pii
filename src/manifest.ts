@@ -1,5 +1,5 @@
+import { type Manifest } from "@taskless/loader";
 import pk from "../package.json" with { type: "json" };
-import { type Manifest } from "./__generated__/manifest.js";
 
 const asJSONKeyRegex = (value: string) => {
   // JSON keys are double quoted and have a colon after them

@@ -1,4 +1,4 @@
-import { type Manifest } from "./__generated__/manifest.js";
+import { type Manifest } from "@taskless/loader";
 
 export type ValidConfigurationValue = NonNullable<
   Manifest["fields"]
