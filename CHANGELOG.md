@@ -1,5 +1,11 @@
 # @taskless/~example
 
+## 0.0.6
+
+### Patch Changes
+
+- Removes cloud dependency for type generation
+
 ## 0.0.5
 
 ### Patch Changes
